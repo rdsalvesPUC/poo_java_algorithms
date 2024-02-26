@@ -8,10 +8,10 @@ public class CirculoAreaPerimetro {
         double raio = keyboard.nextDouble();
 
         // processamento
-        double area = raio *
+//        double area = raio *
 
         // saida de dados
-        System.out.println("Área do circulo:" + area);
-        System.out.println("Perimetro do circulo:" + perimetro);
+//        System.out.println("Área do circulo:" + area);
+//        System.out.println("Perimetro do circulo:" + perimetro);
     }
 }
