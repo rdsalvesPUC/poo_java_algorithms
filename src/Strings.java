@@ -1,7 +1,7 @@
-import java.util.Scanner;
+//import java.util.Scanner;
 public class Strings {
     public static void main(String[] args) {
-        Scanner teclado = new Scanner(System.in);
+//        Scanner teclado = new Scanner(System.in);
 
 //        String frase = new String(" Mas eis que chega a roda-viva ");
 //        System.out.println(frase);
