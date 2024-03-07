@@ -6,6 +6,7 @@ public class LeituraDadosIntervalo {
         boolean valido = false;
         int number = 0;
         int trys = 5;
+        int counter = 0;
 
 //        do {
 //            System.out.println("Informe um número de 5 a 10: ");
@@ -33,17 +34,32 @@ public class LeituraDadosIntervalo {
 //            }
 //        }
 
-//        ##### Tentativas LIMITADAS a 5
-        for (int i = 0; i < trys; i++) {
-            System.out.println("Informa um número de 5 a 10: ");
+//        ##### Tentativas LIMITADAS a 5 usando FOR
+//        for (int i = 0; i < trys; i++) {
+//            System.out.println("Informa um número de 5 a 10: ");
+//            number = teclado.nextInt();
+//
+//            if (number >= 5 && number <= 10) {
+//                System.out.println("Valor aceito");
+//                valido = true;
+//            } else {
+//                System.out.println("Valor fora do intervalo, tente novamente\n");
+//            }
+//        }
+
+//        ###### Tentativas LIMITADAS usando do-while com counter
+        do {
+            System.out.println("Informe um número de 5 a 10: ");
             number = teclado.nextInt();
 
+            counter++;
+
             if (number >= 5 && number <= 10) {
-                System.out.println("Valor aceito");
-                valido = true;
-            } else {
-                System.out.println("Valor fora do intervalo, tente novamente\n");
+                System.out.println("Valor " + number + " validado");
             }
-        }
+            else {
+                System.out.println("Valor fora do intervalo, tente novamente.");
+            }
+        } while (counter < 5);
     }
 }
