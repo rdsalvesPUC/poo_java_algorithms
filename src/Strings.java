@@ -46,12 +46,36 @@ public class Strings {
 //        String frase = teclado.nextLine();
 //        System.out.println(frase);
 
-        String s;
-        s = String.format("inteiro decimal: %8d ", 45);
-        System.out.println(s);
+//        String s;
+//        s = String.format("inteiro decimal: %8d ", 45);
+//        System.out.println(s);
+//
+//        s = String.format("real: %6.2f", 4.6789);
+//        System.out.println(s);
 
-        s = String.format("real: %6.2f", 4.6789);
-        System.out.println(s);
+//        int x = 1;
+//        System.out.println(" i x");
+//        for (int i = 0; i <= 10; i++) {
+//
+//            String saida = "i= " + i + " => x = " + x;
+//            System.out.println(saida);
+//            x *= 2;
+//        }
 
+//        int x = 1;
+//        System.out.println("    i        x");
+//        for (int i = 0; i <= 10; i++) {
+//            String saida1 = String.format("i = %d => x = %d", i, x);
+//            System.out.println(saida1);
+//            x *= 2;
+//        }
+
+        int x = 1;
+        System.out.println("   i         x");
+        for (int i = 0; i <= 10; i++) {
+            String saida1 = String.format("%4d%10d", i, x);
+            System.out.println(saida1);
+            x *= 2;
+        }
     }
 }

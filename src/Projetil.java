@@ -18,17 +18,18 @@ public class Projetil {
 //        Tempo de lançamento: T = (2 V0 sen α)/g
         double TL = (2 * VI * Math.sin(radiano_alpha)) / g;
 
+        System.out.printf("Velocidade Inicial: %.4fm/s\n", VI);
+        System.out.printf("Tempo Total: %.2fs\n", TL);
+
 //        Coordenadas
-//        while () {
-            double x = (VI * Math.cos(radiano_alpha)) * TL;
-            double y = (VI * Math.sin(radiano_alpha)) * TL - (g * Math.pow(TL, 2) / 2);
+        double time = 0;
+        while (time <= TL) {
 
+            time = time + 0.1;
+            double x = VI * Math.cos(radiano_alpha) * time;
+            double y = (VI * Math.sin(radiano_alpha)) * time - (g * Math.pow(time, 2) / 2);
 
-            System.out.println("Velocidade Inicial: " + VI + "m/s");
-            System.out.println("Tempo Total: " + TL + "s");
-
-            System.out.print(x);
-            System.out.print(y);
+            System.out.printf("t=%.1f (%.2f - %.2f)\n", time, x, y);
         }
     }
-//}
+}
