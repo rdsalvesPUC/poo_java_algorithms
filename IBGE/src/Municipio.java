@@ -1,12 +1,18 @@
 import java.util.*;
 
 public class Municipio {
+    String nome;
     private int populacao;
     private double area;
 
-    public Municipio(int populacao, double area) {
+    public Municipio(String nome, int populacao, double area) {
+        this.nome = nome;
         this.populacao = populacao;
         this.area = area;
+    }
+
+    public String getNome() {
+        return nome;
     }
 
     public int populacao() {

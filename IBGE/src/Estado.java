@@ -1,9 +1,11 @@
 import java.util.*;
 
 public class Estado {
+    String nome;
     private ArrayList<Municipio> municipios;
 
-    public Estado() {
+    public Estado(String nome) {
+        this.nome = nome;
         municipios = new ArrayList<>();
     }
 
@@ -11,10 +13,9 @@ public class Estado {
         municipios.add(m);
     }
 
-//    public int menorPopulacao() {
-//
-//        return municipios;
-//    }
+    public String getNome() {
+        return nome;
+    }
 
     public int populacao() {
         int maxPopulacao = 0;
@@ -30,6 +31,22 @@ public class Estado {
             maxArea = maxArea + m.area();
         }
         return maxArea;
+    }
+
+    public String checkSmallestPop() {
+        String smallestPop = "";
+        int municipioPop = municipios.get(0).populacao();
+        String municipioNome = municipios.get(0).getNome();
+
+        for (int i = 1; i < municipios.size(); i++) {
+            int tryPop = municipios.get(i).populacao();
+            if (tryPop < municipioPop) {
+                municipioPop = tryPop;
+                municipioNome = municipios.get(i).getNome();
+            }
+        }
+        smallestPop += municipioNome + ": " + municipioPop + "\n";
+        return smallestPop;
     }
 
     double densidade() { return populacao() / area(); }
