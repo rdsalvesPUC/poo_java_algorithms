@@ -75,32 +75,32 @@ public class Menus {
     }
 
     public static void consultarListaPacientes(Scanner scanner) {
-        System.out.println("Consultar a lista de pacientes de um médico");
+        System.out.println("\nConsultar a lista de pacientes de um médico");
         // Implemente a lógica aqui
     }
 
     public static void consultarAgendaMedico(Scanner scanner) {
-        System.out.println("Consultar a agenda de um médico");
+        System.out.println("\nConsultar a agenda de um médico");
         // Implemente a lógica aqui
     }
 
     public static void consultarPacientesInativos(Scanner scanner) {
-        System.out.println("Consultar lista de pacientes inativos de um médico");
+        System.out.println("\nConsultar lista de pacientes inativos de um médico");
         // Implemente a lógica aqui
     }
 
     public static void consultarMedicosResponsaveis(Scanner scanner) {
-        System.out.println("Médicos responsáveis pelo paciente");
+        System.out.println("\nMédicos responsáveis pelo paciente");
         // Implemente a lógica aqui
     }
 
     public static void consultarAgendaPaciente(Scanner scanner) {
-        System.out.println("Consultar a agenda de um paciente");
+        System.out.println("\nConsultar a agenda de um paciente");
         // Implemente a lógica aqui
     }
 
     public static void consultarHistoricoConsultas(Scanner scanner) {
-        System.out.println("Histórico de consultas do paciente com um médico");
+        System.out.println("\nHistórico de consultas do paciente com um médico");
         // Implemente a lógica aqui
     }
 }
