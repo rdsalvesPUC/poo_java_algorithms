@@ -5,6 +5,13 @@ import java.util.ArrayList;
 
 public class dadosCSV {
 
+    public static BufferedReader ler_csv(String path) throws FileNotFoundException {
+        BufferedReader reader = null;
+        reader = new BufferedReader(new FileReader(path));
+
+        return reader;
+    }
+
     public static ArrayList criar_medicos(String path) {
         ArrayList<Medico> medicos = new ArrayList<>();
         BufferedReader reader = null;
