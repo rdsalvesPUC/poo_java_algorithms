@@ -1,4 +1,3 @@
-import java.time.*;
 import java.io.*;
 import java.util.*;
 
@@ -34,19 +33,19 @@ public class Medico {
         }
     }
 
-    public static ArrayList getListaMedicos() {
+    public static ArrayList get_lista_medicos() {
         return medicos;
     }
 
-    public String getNome() {
+    public String get_nome() {
         return nome;
     }
 
-    public int getCrm() {
+    public int get_crm() {
         return crm;
     }
 
-    public void adicionarPaciente(Paciente paciente) {
+    public void add_paciente(Paciente paciente) {
         pacientes.add(paciente);
     }
 

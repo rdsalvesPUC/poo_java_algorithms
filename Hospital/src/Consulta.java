@@ -1,5 +1,6 @@
 import java.time.*;
 import java.io.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Consulta {
@@ -20,13 +21,15 @@ public class Consulta {
         BufferedReader reader = null;
         String line = "";
         String cvsSplitBy = ",";
+        DateTimeFormatter date_formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         try {
             reader = new BufferedReader(new FileReader(path));
             while ((line = reader.readLine()) != null) {
 
                 String[] consulta = line.split(cvsSplitBy);
-                LocalDate data = LocalDate.parse(consulta[0]);
+
+                LocalDate data = LocalDate.parse(consulta[0], date_formatter);
                 LocalTime horario = LocalTime.parse(consulta[1]);
                 int crm = Integer.parseInt(consulta[2]);
                 String cpf = (consulta[3]);
@@ -38,7 +41,11 @@ public class Consulta {
         }
     }
 
-    public static ArrayList<Consulta> getListaConsultas() {
+    public static void alocar_consultas(int crm, String cpf) {
+
+    }
+
+    public static ArrayList<Consulta> get_lista_consultas() {
         return consultas;
     }
 }

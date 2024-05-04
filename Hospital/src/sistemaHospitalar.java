@@ -1,17 +1,16 @@
-import java.time.*;
 import java.io.*;
 import java.util.*;
 
 public class sistemaHospitalar {
     public static void main(String[] args) throws FileNotFoundException {
         Medico.criar_medicos("Hospital/arquivos_csv/medicos.csv");
-        ArrayList<Medico> listaMedicos = Medico.getListaMedicos();
+        ArrayList<Medico> listaMedicos = Medico.get_lista_medicos();
 
         Paciente.criar_pacientes("Hospital/arquivos_csv/pacientes.csv");
-        ArrayList<Medico> listaPacientes = Paciente.getListaPacientes();
+        ArrayList<Medico> listaPacientes = Paciente.get_lista_pacientes();
 
-//        Consulta.criar_consultas("Hospital/arquivos_csv/consultas.csv");
-        ArrayList<Consulta> listaConsultas = Consulta.getListaConsultas();
+        Consulta.criar_consultas("Hospital/arquivos_csv/consultas.csv");
+        ArrayList<Consulta> listaConsultas = Consulta.get_lista_consultas();
 
 
 

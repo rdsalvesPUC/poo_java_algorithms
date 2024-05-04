@@ -1,4 +1,3 @@
-import java.time.*;
 import java.io.*;
 import java.util.*;
 
@@ -34,23 +33,19 @@ public class Paciente {
         }
     }
 
-    public static ArrayList getListaPacientes() {
+    public static ArrayList get_lista_pacientes() {
         return pacientes;
     }
 
-    public String getNome() {
+    public String get_nome() {
         return nome;
     }
 
-    public String getCpf() {
+    public String get_cpf() {
         return cpf;
     }
 
-    public void setCpf(String novoCpf) {
-        cpf = novoCpf;
-    }
-
-    public void adicionarConsulta(Consulta consulta) {
+    public void add_consulta(Consulta consulta) {
         consultas.add(consulta);
     }
 }
