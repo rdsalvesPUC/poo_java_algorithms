@@ -50,6 +50,10 @@ public class Medico {
     }
 
     public void exibir() {
-        System.out.printf("\nMédico: %-10s \nCRM: %-10s", nome, crm);
+        System.out.printf("\nMédico: %-10s CRM: %-10s", nome, crm);
+        System.out.println("\n------------------------------------");
+        for (Paciente p : pacientes) {
+            System.out.printf("%-10s %-10s\n", p.get_nome(), p.get_cpf());
+        }
     }
 }

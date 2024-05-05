@@ -7,12 +7,14 @@ public class sistemaHospitalar {
         ArrayList<Medico> listaMedicos = Medico.get_lista_medicos();
 
         Paciente.criar_pacientes("Hospital/arquivos_csv/pacientes.csv");
-        ArrayList<Medico> listaPacientes = Paciente.get_lista_pacientes();
+        ArrayList<Paciente> listaPacientes = Paciente.get_lista_pacientes();
 
         Consulta.criar_consultas("Hospital/arquivos_csv/consultas.csv");
         ArrayList<Consulta> listaConsultas = Consulta.get_lista_consultas();
 
+        Paciente.alocar_paciente();
 
+        listaMedicos.get(0).exibir();
 
         Scanner scanner = new Scanner(System.in);
 

@@ -1,4 +1,5 @@
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Paciente {
@@ -47,5 +48,26 @@ public class Paciente {
 
     public void add_consulta(Consulta consulta) {
         consultas.add(consulta);
+    }
+
+    public static void alocar_paciente() {
+        ArrayList<Medico> listaMedicos = Medico.get_lista_medicos();
+        for (Paciente paciente : pacientes) {
+            for (Consulta consulta : paciente.consultas) {
+                for (Medico medico: listaMedicos) {
+                    if (medico.get_crm() == consulta.get_crm()) {
+                        medico.add_paciente(paciente);
+                    }
+                }
+            }
+        }
+    }
+
+    public void exibir() {
+        System.out.printf("\nPaciente: %-10s CPF: %-10s", nome, cpf);
+        System.out.println("\n------------------------------------");
+        for (Consulta consulta : consultas) {
+            System.out.printf("%-10s %-10s\n", consulta.get_crm(), consulta.get_cpf());
+        }
     }
 }

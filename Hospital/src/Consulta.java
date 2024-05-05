@@ -22,6 +22,7 @@ public class Consulta {
         String line = "";
         String cvsSplitBy = ",";
         DateTimeFormatter date_formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        ArrayList<Paciente> listaPacientes = Paciente.get_lista_pacientes();
 
         try {
             reader = new BufferedReader(new FileReader(path));
@@ -34,18 +35,30 @@ public class Consulta {
                 int crm = Integer.parseInt(consulta[2]);
                 String cpf = (consulta[3]);
 
-                consultas.add(new Consulta(data, horario, crm, cpf));
+                Consulta nova_consulta = new Consulta(data, horario, crm, cpf);
+                consultas.add(nova_consulta);
+
+                Consulta.alocar_consultas(nova_consulta, listaPacientes);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void alocar_consultas(int crm, String cpf) {
-
-    }
-
     public static ArrayList<Consulta> get_lista_consultas() {
         return consultas;
+    }
+
+    public int get_crm() {
+        return crm;
+    }
+
+    public static void alocar_consultas(Consulta consulta, ArrayList<Paciente> pacientes) {
+        for (Paciente p : pacientes) {
+            if (consulta.cpf.equals(p.get_cpf())) {
+                p.add_consulta(consulta);
+                break;
+            }
+        }
     }
 }
