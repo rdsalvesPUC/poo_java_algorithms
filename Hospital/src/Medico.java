@@ -41,6 +41,16 @@ public class Medico {
         return nome;
     }
 
+    public static String get_medico_nome(int crm) {
+        String medico_nome = "";
+        for (Medico medico : medicos) {
+            if (crm == medico.get_crm()) {
+                medico_nome = medico.get_nome();
+            }
+        }
+        return medico_nome;
+    }
+
     public int get_crm() {
         return crm;
     }
@@ -52,8 +62,10 @@ public class Medico {
     public void exibir() {
         System.out.printf("\nMédico: %-10s CRM: %-10s", nome, crm);
         System.out.println("\n------------------------------------");
+        System.out.println("Paciente             CPF");
+        System.out.println("------------------------------------");
         for (Paciente p : pacientes) {
-            System.out.printf("%-10s %-10s\n", p.get_nome(), p.get_cpf());
+            System.out.printf("%-20s %-20s\n", p.get_nome(), p.get_cpf());
         }
     }
 }

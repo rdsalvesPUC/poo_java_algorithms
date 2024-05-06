@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.time.*;
 import java.io.*;
 import java.time.format.DateTimeFormatter;
@@ -47,6 +48,14 @@ public class Consulta {
 
     public static ArrayList<Consulta> get_lista_consultas() {
         return consultas;
+    }
+
+    public LocalDate get_data() {
+        return data;
+    }
+
+    public LocalTime get_horario() {
+        return horario;
     }
 
     public int get_crm() {

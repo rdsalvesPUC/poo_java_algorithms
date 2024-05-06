@@ -64,10 +64,13 @@ public class Paciente {
     }
 
     public void exibir() {
-        System.out.printf("\nPaciente: %-10s CPF: %-10s", nome, cpf);
+        System.out.printf("\nPaciente: %-20s CPF: %-10s", nome, cpf);
         System.out.println("\n------------------------------------");
+        System.out.println("Data            Horário    Médico (CRM)");
+        System.out.println("------------------------------------");
         for (Consulta consulta : consultas) {
-            System.out.printf("%-10s %-10s\n", consulta.get_crm(), consulta.get_cpf());
+            String nome_medico = Medico.get_medico_nome(consulta.get_crm());
+            System.out.printf("%-15s %-10s %-10s (%s)\n", consulta.get_data(), consulta.get_horario(), nome_medico, consulta.get_crm());
         }
     }
 }

@@ -14,8 +14,6 @@ public class sistemaHospitalar {
 
         Paciente.alocar_paciente();
 
-        listaMedicos.get(0).exibir();
-
         Scanner scanner = new Scanner(System.in);
 
         int escolha;
