@@ -59,13 +59,26 @@ public class Medico {
         pacientes.add(paciente);
     }
 
-    public void exibir() {
-        System.out.printf("\nMédico: %-10s CRM: %-10s", nome, crm);
-        System.out.println("\n------------------------------------");
-        System.out.println("Paciente             CPF");
-        System.out.println("------------------------------------");
+//    public void exibir() {
+//        System.out.printf("\nMédico: %-10s CRM: %-10s", nome, crm);
+//        System.out.println("\n------------------------------------");
+//        System.out.println("Paciente             CPF");
+//        System.out.println("------------------------------------");
+//        for (Paciente p : pacientes) {
+//            System.out.printf("%-20s %-20s\n", p.get_nome(), p.get_cpf());
+//        }
+//    }
+
+    // Modificar o método exibir() para retornar uma representação em String dos dados
+    public String exibir() {
+        StringBuilder output = new StringBuilder();
+        output.append(String.format("\nMédico: %-10s CRM: %-10s", nome, crm));
+        output.append("\n------------------------------------");
+        output.append("\nPaciente             CPF");
+        output.append("\n------------------------------------");
         for (Paciente p : pacientes) {
-            System.out.printf("%-20s %-20s\n", p.get_nome(), p.get_cpf());
+            output.append(String.format("\n%-20s %-20s", p.get_nome(), p.get_cpf()));
         }
+        return output.toString();
     }
 }

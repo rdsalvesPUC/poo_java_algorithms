@@ -1,4 +1,6 @@
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Menus {
@@ -83,73 +85,83 @@ public class Menus {
         System.out.println("\nPor favor, informe o CRM do médico desejado: ");
         int medico_desejado = scanner.nextInt();
         scanner.nextLine();
+        String conteudo = "";
 
         boolean encontrado = false;
         for (Medico medico : listaMedicos) {
             if (medico_desejado == medico.get_crm()) {
-                medico.exibir();
+                conteudo = medico.exibir();
+                System.out.println(medico.exibir());
                 encontrado = true;
                 break;
             }
         }
         if (!encontrado) {
-            System.out.println("--- Esse CRM não pertecem um médico em nossa base, tente novamente!");
+            System.out.println("--- Esse CRM não pertece um médico em nossa base, tente novamente!");
         }
         else
-            Menus.consultarSalvarResultado(scanner);
+            Menus.consultarSalvarResultado(scanner, conteudo);
     }
 
     public static void consultarAgendaMedico(Scanner scanner) {
         System.out.println("\nConsultar a agenda de um médico");
         // Implemente a lógica aqui
-        Menus.consultarSalvarResultado(scanner);
+//        Menus.consultarSalvarResultado(scanner, conteudo);
     }
 
     public static void consultarPacientesInativos(Scanner scanner) {
         System.out.println("\nConsultar lista de pacientes inativos de um médico");
         // Implemente a lógica aqui
-        Menus.consultarSalvarResultado(scanner);
+//        Menus.consultarSalvarResultado(scanner, conteudo);
     }
 
     public static void consultarMedicosResponsaveis(Scanner scanner) {
         System.out.println("\nMédicos responsáveis pelo paciente");
         // Implemente a lógica aqui
-        Menus.consultarSalvarResultado(scanner);
+//        Menus.consultarSalvarResultado(scanner, conteudo);
     }
 
     public static void consultarAgendaPaciente(Scanner scanner) {
         System.out.println("\nConsultar a agenda de um paciente");
         // Implemente a lógica aqui
-        Menus.consultarSalvarResultado(scanner);
+//        Menus.consultarSalvarResultado(scanner, conteudo);
     }
 
     public static void consultarHistoricoConsultas(Scanner scanner) {
         System.out.println("\nHistórico de consultas do paciente com um médico");
         // Implemente a lógica aqui
-        Menus.consultarSalvarResultado(scanner);
+//        Menus.consultarSalvarResultado(scanner, conteudo);
     }
 
-    public static void consultarSalvarResultado(Scanner scanner) {
+    public static void consultarSalvarResultado(Scanner scanner, String conteudo) {
         System.out.println("Deseja salvar o resultado? (S/N)");
         String resposta = scanner.nextLine().trim().toUpperCase();
         if (resposta.equals("S")) {
-            // Chama o método para salvar o resultado em arquivo TXT
             System.out.println("Salvando o resultado em arquivo TXT...");
+            salvar_arquivo(conteudo, "consulta-" + consultarDataHora());
         } else if (resposta.equals("N")) {
-            // Volta para o menu
             System.out.println("Voltando para o menu...");
         } else {
             System.out.println("--- Resposta inválida. Voltando para o menu...");
         }
     }
 
-    public static void salvar_arquivo(String nomeArquivo) {
+    public static void salvar_arquivo(String conteudo, String nomeArquivo) {
+        String extensao_arquivo = ".txt";
+        nomeArquivo += extensao_arquivo;
+
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomeArquivo))) {
-            // Escreve o resultado da exibição do médico no arquivo
-//            writer.write(exibir());
+            writer.write(conteudo);
             System.out.println("Resultado salvo em " + nomeArquivo);
         } catch (IOException e) {
             System.out.println("Erro ao salvar o resultado em arquivo: " + e.getMessage());
         }
+    }
+
+    public static String consultarDataHora() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        String dataHora = now.format(formatter);
+        return dataHora;
     }
 }
