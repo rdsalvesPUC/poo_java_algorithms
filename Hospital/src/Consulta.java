@@ -119,4 +119,23 @@ public class Consulta implements Comparable<Consulta> {
         System.out.println("--------------------------------------------------------");
         System.out.printf("%-12s %-8s %-17s (%s)\n", data_to_str(data), horario, nome_paciente, cpf);
     }
+
+    // public String exibir_consultas_by_paciente_and_medico() {
+    //     StringBuilder output = new StringBuilder();
+    //     String nome_paciente = Paciente.get_paciente_nome(cpf);
+    //     String nome_medico = Medico.get_medico_nome(crm);
+    //
+    //     output.append(String.format("\nPaciente: %-17s CPF: %-10s - Medico: %-17s CRM: %-10s", nome_paciente, cpf, nome_medico, crm));
+    //     output.append("\n------------------------------------");
+    //     output.append("\nData            Horário             ");
+    //     output.append("\n------------------------------------");
+    //     Collections.sort(Consulta.get_lista_consultas());
+    //     for (Consulta consulta : consultas) {
+    //         if (consulta.get_data().isBefore(LocalDate.now())) {
+    //             // output.append(String.format("\n%-15s %-10s", consulta.get_data_str(), consulta.get_horario()));
+    //             output.append(String.format("\n%-12s %-8s %-17s (%s)", consulta.get_data_str(), consulta.get_horario(), nome_paciente, consulta.get_cpf()));
+    //         }
+    //     }
+    //     return output.toString();
+    // }
 }

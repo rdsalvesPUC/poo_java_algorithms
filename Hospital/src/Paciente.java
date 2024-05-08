@@ -1,4 +1,5 @@
 import java.io.*;
+import java.time.LocalDate;
 import java.util.*;
 
 public class Paciente {
@@ -37,6 +38,10 @@ public class Paciente {
         return pacientes;
     }
 
+    public ArrayList<Consulta> get_lista_consultas() {
+        return consultas;
+    }
+
     public String get_nome() {
         return nome;
     }
@@ -72,6 +77,16 @@ public class Paciente {
         }
     }
 
+    public boolean check_medico(int crm) {
+        boolean resposta = false;
+        for (Consulta consulta : consultas) {
+            if (crm == consulta.get_crm()) {
+                resposta = true;
+            }
+        }
+        return resposta;
+    }
+
     public void exibir() {
         System.out.printf("\nPaciente: %-20s CPF: %-10s", nome, cpf);
         System.out.println("\n------------------------------------");
@@ -83,6 +98,7 @@ public class Paciente {
         output.append("\n------------------------------------");
         output.append("\nData            Horário    Médico (CRM)");
         output.append("\n------------------------------------");
+        Collections.sort(Consulta.get_lista_consultas());
         for (Consulta consulta : consultas) {
             String nome_medico = Medico.get_medico_nome(consulta.get_crm());
             output.append(String.format("\n%-15s %-10s %-10s (%s)", consulta.get_data_str(), consulta.get_horario(), nome_medico, consulta.get_crm()));
@@ -90,4 +106,36 @@ public class Paciente {
         return output.toString();
     }
 
+    public String exibir_medicos_by_paciente() {
+        StringBuilder output = new StringBuilder();
+        output.append(String.format("\nPaciente: %-20s CPF: %-10s", nome, cpf));
+        output.append("\n------------------------------------");
+        output.append("\nMédico Responsáveis (CRM)");
+        output.append("\n------------------------------------");
+        Collections.sort(Consulta.get_lista_consultas());
+        for (Consulta consulta : consultas) {
+            String nome_medico = Medico.get_medico_nome(consulta.get_crm());
+            output.append(String.format("\n%-20s (%s)", nome_medico, consulta.get_crm()));
+        }
+        return output.toString();
+    }
+
+    public String exibir_consultas_by_paciente_and_medico(int crm) {
+        StringBuilder output = new StringBuilder();
+        String nome_paciente = Paciente.get_paciente_nome(cpf);
+        String nome_medico = Medico.get_medico_nome(crm);
+
+        output.append(String.format("\nPaciente: %-20s CPF: %-10s\n  Medico: %-20s CRM: %-10s", nome_paciente, cpf, nome_medico, crm));
+        output.append("\n------------------------------------");
+        output.append("\nData         Horário");
+        output.append("\n------------------------------------");
+        Collections.sort(Consulta.get_lista_consultas());
+        for (Consulta consulta : consultas) {
+            if (consulta.get_data().isBefore(LocalDate.now()) && consulta.get_crm() == crm) {
+                // output.append(String.format("\n%-15s %-10s", consulta.get_data_str(), consulta.get_horario()));
+                output.append(String.format("\n%-12s %-8s %-17s (%s)", consulta.get_data_str(), consulta.get_horario()));
+            }
+        }
+        return output.toString();
+    }
 }

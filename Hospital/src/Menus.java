@@ -3,6 +3,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class Menus {
     private static ArrayList<Medico> listaMedicos = Medico.get_lista_medicos();
@@ -82,6 +83,8 @@ public class Menus {
         } while (true);
     }
 
+    // DONE
+    // 1 Quais são todos os pacientes de um determinado médico?
     public static void consultarListaPacientes(Scanner scanner) {
         System.out.println("\nPor favor, informe o CRM do médico desejado: ");
         int crm = scanner.nextInt();
@@ -104,6 +107,9 @@ public class Menus {
             Menus.consultarSalvarResultado(scanner, conteudo);
     }
 
+    // DONE
+    // 2 Quais são todas as consultas agendadas para um determinado médico em determinado período (definido por uma data
+    // inicial e uma data final), na ordem crescente dos horários? (O período pode cobrir tanto o tempo passado como o tempo futuro.)
     public static void consultarAgendaMedico(Scanner scanner) {
         System.out.println("\nPor favor, informe o CRM do médico desejado: ");
         int crm = scanner.nextInt();
@@ -114,6 +120,7 @@ public class Menus {
             System.out.println("Informe a data inicial (dd/mm/aaaa): ");
             String data_string = scanner.nextLine();
             data_inicial = Consulta.str_to_data(data_string);
+
             if (data_inicial == null) {
                 System.out.println("A data informada é inválida. Por favor, tente novamente.");
             }
@@ -124,6 +131,7 @@ public class Menus {
             System.out.println("Informe a data final (dd/mm/aaaa): ");
             String data_string = scanner.nextLine();
             data_final = Consulta.str_to_data(data_string);
+
             if (data_final == null) {
                 System.out.println("A data informada é inválida. Por favor, tente novamente.");
             }
@@ -147,16 +155,43 @@ public class Menus {
             Menus.consultarSalvarResultado(scanner, conteudo);
     }
 
+    // 6 Quais são os pacientes de um determinado médico que não o consulta há mais
+    // que um determinado tempo (em meses)?
     public static void consultarPacientesInativos(Scanner scanner) {
         System.out.println("\nConsultar lista de pacientes inativos de um médico");
         // Implemente a lógica aqui
 //        Menus.consultarSalvarResultado(scanner, conteudo);
     }
 
+    // DONE
+    // 3 Quais são todos os médicos que um determinado paciente já consultou ou tem consulta agendada?
     public static void consultarMedicosResponsaveis(Scanner scanner) {
-        System.out.println("\nMédicos responsáveis pelo paciente");
-        // Implemente a lógica aqui
-//        Menus.consultarSalvarResultado(scanner, conteudo);
+        String conteudo = "";
+        String cpfRegex = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}";
+        String cpf = "";
+
+        while (!Pattern.matches(cpfRegex, cpf)) {
+            System.out.println("\nPor favor, informe o CPF do paciente desejado: ");
+            cpf = scanner.nextLine();
+
+            if (!Pattern.matches(cpfRegex, cpf)) {
+                System.out.println("--- CPF inválido! Informe o CPF no formato 000.000.000-00, respeitando a pontuação.");
+            }
+        }
+        boolean encontrado = false;
+        for (Paciente paciente : listaPacientes) {
+            if (Objects.equals(cpf, paciente.get_cpf())) {
+                conteudo = paciente.exibir_medicos_by_paciente();
+                System.out.println(paciente.exibir_medicos_by_paciente());
+                encontrado = true;
+                break;
+            }
+        }
+        if (!encontrado) {
+            System.out.println("--- Esse CPF não pertece à um paciente em nossa base, tente novamente!");
+        }
+        else
+            Menus.consultarSalvarResultado(scanner, conteudo);
     }
 
     public static void consultarAgendaPaciente(Scanner scanner) {
@@ -165,14 +200,54 @@ public class Menus {
 //        Menus.consultarSalvarResultado(scanner, conteudo);
     }
 
+    // DONE
+    // Quais são todas as consultas que um determinado paciente realizou com determinado médico?
+    // (Somente consultas realizadas em um tempo passado são consideradas.)
     public static void consultarHistoricoConsultas(Scanner scanner) {
-        System.out.println("\nHistórico de consultas do paciente com um médico");
-        // Implemente a lógica aqui
-//        Menus.consultarSalvarResultado(scanner, conteudo);
+        String conteudo = "";
+        String cpfRegex = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}";
+        String cpf = "";
+
+        while (!Pattern.matches(cpfRegex, cpf)) {
+            System.out.println("\nPor favor, informe o CPF do paciente desejado: ");
+            cpf = scanner.nextLine();
+
+            if (!Pattern.matches(cpfRegex, cpf)) {
+                System.out.println("--- CPF inválido! Informe o CPF no formato 000.000.000-00, respeitando a pontuação.");
+            }
+        }
+
+        System.out.println("\nPor favor, informe o CRM do médico desejado: ");
+        int crm = scanner.nextInt();
+        scanner.nextLine();
+
+        boolean paciente_encontrado = false;
+        boolean medico_encontrado = false;
+        for (Paciente paciente : listaPacientes) {
+            if (Objects.equals(cpf, paciente.get_cpf())) {
+                paciente_encontrado = true;
+                if (paciente.check_medico(crm)) {
+                    medico_encontrado = true;
+                    conteudo = paciente.exibir_consultas_by_paciente_and_medico(crm);
+                    System.out.println(paciente.exibir_consultas_by_paciente_and_medico(crm));
+                    break;
+                }
+                else {
+                    System.out.println("--- Esse paciente nunca foi atendido por esse médico. Tente novamente!");
+                }
+            }
+        }
+        if (!paciente_encontrado) {
+            System.out.println("--- Esse CPF não pertece à um paciente em nossa base, tente novamente!");
+        }
+        if (paciente_encontrado && medico_encontrado)
+            Menus.consultarSalvarResultado(scanner, conteudo);
     }
 
+
+    // Metodos para salvar os resultados em arquivos de TXT
     public static void consultarSalvarResultado(Scanner scanner, String conteudo) {
-        System.out.println("Deseja salvar o resultado? (S/N)");
+        System.out.println("\n+++ Deseja salvar o resultado? (S/N)");
         String resposta = scanner.nextLine().trim().toUpperCase();
         if (resposta.equals("S")) {
             System.out.println("Salvando o resultado em arquivo TXT...");
@@ -190,9 +265,9 @@ public class Menus {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomeArquivo))) {
             writer.write(conteudo);
-            System.out.println("Resultado salvo em " + nomeArquivo);
+            System.out.println("+++ Resultado salvo em " + nomeArquivo);
         } catch (IOException e) {
-            System.out.println("Erro ao salvar o resultado em arquivo: " + e.getMessage());
+            System.out.println("--- Erro ao salvar o resultado em arquivo: " + e.getMessage());
         }
     }
 
