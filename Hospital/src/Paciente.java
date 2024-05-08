@@ -1,5 +1,4 @@
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Paciente {
@@ -42,6 +41,16 @@ public class Paciente {
         return nome;
     }
 
+    public static String get_paciente_nome(String cpf) {
+        String paciente_nome = "";
+        for (Paciente paciente : pacientes) {
+            if (Objects.equals(cpf, paciente.get_cpf())) {
+                paciente_nome = paciente.get_nome();
+            }
+        }
+        return paciente_nome;
+    }
+
     public String get_cpf() {
         return cpf;
     }
@@ -66,11 +75,19 @@ public class Paciente {
     public void exibir() {
         System.out.printf("\nPaciente: %-20s CPF: %-10s", nome, cpf);
         System.out.println("\n------------------------------------");
-        System.out.println("Data            Horário    Médico (CRM)");
-        System.out.println("------------------------------------");
+    }
+
+    public String exibir_consultas_by_paciente() {
+        StringBuilder output = new StringBuilder();
+        output.append(String.format("\nPaciente: %-20s CPF: %-10s", nome, cpf));
+        output.append("\n------------------------------------");
+        output.append("\nData            Horário    Médico (CRM)");
+        output.append("\n------------------------------------");
         for (Consulta consulta : consultas) {
             String nome_medico = Medico.get_medico_nome(consulta.get_crm());
-            System.out.printf("%-15s %-10s %-10s (%s)\n", consulta.get_data(), consulta.get_horario(), nome_medico, consulta.get_crm());
+            output.append(String.format("\n%-15s %-10s %-10s (%s)", consulta.get_data_str(), consulta.get_horario(), nome_medico, consulta.get_crm()));
         }
+        return output.toString();
     }
+
 }

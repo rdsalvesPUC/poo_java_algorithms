@@ -1,10 +1,11 @@
-import java.lang.reflect.Array;
+import java.text.DateFormat;
 import java.time.*;
 import java.io.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
-public class Consulta {
+public class Consulta implements Comparable<Consulta> {
     private LocalDate data;
     private LocalTime horario;
     private int crm;
@@ -46,12 +47,38 @@ public class Consulta {
         }
     }
 
+    public static String data_to_str(LocalDate data) {
+        DateTimeFormatter date_formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String data_formatada = data.format(date_formatter);
+        return data_formatada;
+
+    }
+
+    public static LocalDate str_to_data(String data) {
+        String splitBy = "/";
+        String[] array_data = data.split(splitBy);
+        String data_iso = "";
+        LocalDate data_formatada;
+        try {
+            data_iso = array_data[2] + "-" + array_data[1] + "-" + array_data[0];
+            data_formatada = LocalDate.parse(data_iso);
+        }
+        catch (Exception e) {
+            data_formatada = null;
+        }
+        return data_formatada;
+    }
+
     public static ArrayList<Consulta> get_lista_consultas() {
         return consultas;
     }
 
     public LocalDate get_data() {
         return data;
+    }
+
+    public String get_data_str() {
+        return data_to_str(data);
     }
 
     public LocalTime get_horario() {
@@ -62,6 +89,10 @@ public class Consulta {
         return crm;
     }
 
+    public String get_cpf() {
+        return cpf;
+    }
+
     public static void alocar_consultas(Consulta consulta, ArrayList<Paciente> pacientes) {
         for (Paciente p : pacientes) {
             if (consulta.cpf.equals(p.get_cpf())) {
@@ -69,5 +100,23 @@ public class Consulta {
                 break;
             }
         }
+    }
+
+    @Override
+    public int compareTo(Consulta outraConsulta) {
+        int comparacaoData = this.data.compareTo(outraConsulta.data);
+        if (comparacaoData != 0) {
+            return comparacaoData;
+        }
+
+        return this.horario.compareTo(outraConsulta.horario);
+    }
+
+    public void exibir() {
+        String nome_paciente = Paciente.get_paciente_nome(cpf);
+
+        System.out.println("\nData         Horário  Paciente (CPF)");
+        System.out.println("--------------------------------------------------------");
+        System.out.printf("%-12s %-8s %-17s (%s)\n", data_to_str(data), horario, nome_paciente, cpf);
     }
 }

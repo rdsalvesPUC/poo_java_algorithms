@@ -1,4 +1,5 @@
 import java.io.*;
+import java.time.LocalDate;
 import java.util.*;
 
 public class Medico {
@@ -59,25 +60,40 @@ public class Medico {
         pacientes.add(paciente);
     }
 
-//    public void exibir() {
-//        System.out.printf("\nMédico: %-10s CRM: %-10s", nome, crm);
-//        System.out.println("\n------------------------------------");
-//        System.out.println("Paciente             CPF");
-//        System.out.println("------------------------------------");
-//        for (Paciente p : pacientes) {
-//            System.out.printf("%-20s %-20s\n", p.get_nome(), p.get_cpf());
-//        }
-//    }
+    public void exibir() {
+        System.out.printf("\nMédico: %-10s CRM: %-10s", nome, crm);
+        System.out.println("\n------------------------------------");
+    }
 
-    // Modificar o método exibir() para retornar uma representação em String dos dados
-    public String exibir() {
+    public String exibir_pacientes_by_medico() {
         StringBuilder output = new StringBuilder();
         output.append(String.format("\nMédico: %-10s CRM: %-10s", nome, crm));
         output.append("\n------------------------------------");
         output.append("\nPaciente             CPF");
         output.append("\n------------------------------------");
-        for (Paciente p : pacientes) {
-            output.append(String.format("\n%-20s %-20s", p.get_nome(), p.get_cpf()));
+        for (Paciente paciente : pacientes) {
+            output.append(String.format("\n%-20s %-20s", paciente.get_nome(), paciente.get_cpf()));
+        }
+        return output.toString();
+    }
+
+    public String exibir_consultas_by_medico(LocalDate data_inicial, LocalDate data_final) {
+        String nome_medico = Medico.get_medico_nome(crm);
+        StringBuilder output = new StringBuilder();
+        output.append(String.format("\nMédico: %-10s CRM: %-10s", nome_medico, crm));
+        output.append("\n--------------------------------------------------------");
+        output.append("\n-                      Consultas                       -");
+        output.append("\n--------------------------------------------------------");
+        output.append("\nData         Horário  Paciente (CPF)");
+        output.append("\n--------------------------------------------------------");
+        Collections.sort(Consulta.get_lista_consultas());
+        for (Consulta consulta : Consulta.get_lista_consultas()) {
+            if (crm == consulta.get_crm()) {
+                if (consulta.get_data().isAfter(data_inicial) && consulta.get_data().isBefore(data_final)) {
+                    String nome_paciente = Paciente.get_paciente_nome(consulta.get_cpf());
+                    output.append(String.format("\n%-12s %-8s %-17s (%s)", consulta.get_data_str(), consulta.get_horario(), nome_paciente, consulta.get_cpf()));
+                }
+            }
         }
         return output.toString();
     }

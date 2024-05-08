@@ -1,4 +1,5 @@
 import java.io.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -9,7 +10,7 @@ public class Menus {
     private static ArrayList<Consulta> listaConsultas = Consulta.get_lista_consultas();
 
     public static void exibirMenuPrincipal() {
-        System.out.println("Bem-vindo ao Hospital XPTO");
+        System.out.println("\nBem-vindo ao Hospital XPTO");
         System.out.println("------------------------------------");
         System.out.println("# Você deseja informações sobre um Médico ou um Paciente?");
         System.out.println("1 - Médico >");
@@ -83,30 +84,67 @@ public class Menus {
 
     public static void consultarListaPacientes(Scanner scanner) {
         System.out.println("\nPor favor, informe o CRM do médico desejado: ");
-        int medico_desejado = scanner.nextInt();
+        int crm = scanner.nextInt();
         scanner.nextLine();
         String conteudo = "";
 
         boolean encontrado = false;
         for (Medico medico : listaMedicos) {
-            if (medico_desejado == medico.get_crm()) {
-                conteudo = medico.exibir();
-                System.out.println(medico.exibir());
+            if (crm == medico.get_crm()) {
+                conteudo = medico.exibir_pacientes_by_medico();
+                System.out.println(medico.exibir_pacientes_by_medico());
                 encontrado = true;
                 break;
             }
         }
         if (!encontrado) {
-            System.out.println("--- Esse CRM não pertece um médico em nossa base, tente novamente!");
+            System.out.println("--- Esse CRM não pertece à um médico em nossa base, tente novamente!");
         }
         else
             Menus.consultarSalvarResultado(scanner, conteudo);
     }
 
     public static void consultarAgendaMedico(Scanner scanner) {
-        System.out.println("\nConsultar a agenda de um médico");
-        // Implemente a lógica aqui
-//        Menus.consultarSalvarResultado(scanner, conteudo);
+        System.out.println("\nPor favor, informe o CRM do médico desejado: ");
+        int crm = scanner.nextInt();
+        scanner.nextLine();
+
+        LocalDate data_inicial = null;
+        while (data_inicial == null) {
+            System.out.println("Informe a data inicial (dd/mm/aaaa): ");
+            String data_string = scanner.nextLine();
+            data_inicial = Consulta.str_to_data(data_string);
+            if (data_inicial == null) {
+                System.out.println("A data informada é inválida. Por favor, tente novamente.");
+            }
+        }
+
+        LocalDate data_final = null;
+        while (data_final == null) {
+            System.out.println("Informe a data final (dd/mm/aaaa): ");
+            String data_string = scanner.nextLine();
+            data_final = Consulta.str_to_data(data_string);
+            if (data_final == null) {
+                System.out.println("A data informada é inválida. Por favor, tente novamente.");
+            }
+        }
+
+        String conteudo = "";
+
+        boolean encontrado = false;
+        for (Medico medico : listaMedicos) {
+            if (crm == medico.get_crm()) {
+                conteudo = medico.exibir_consultas_by_medico(data_inicial, data_final);
+                System.out.println(medico.exibir_consultas_by_medico(data_inicial, data_final));
+                encontrado = true;
+                break;
+            }
+        }
+        if (!encontrado) {
+            System.out.println("--- Esse CRM não pertece à um médico em nossa base, tente novamente!");
+        }
+        else
+            Menus.consultarSalvarResultado(scanner, conteudo);
     }
 
     public static void consultarPacientesInativos(Scanner scanner) {
