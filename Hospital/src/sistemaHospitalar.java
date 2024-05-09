@@ -8,6 +8,8 @@ public class sistemaHospitalar {
         Paciente.criar_pacientes("Hospital/arquivos_csv/pacientes.csv");
         Consulta.criar_consultas("Hospital/arquivos_csv/consultas.csv");
 
+        Paciente.alocar_paciente();
+
         Scanner scanner = new Scanner(System.in);
 
         int escolha;

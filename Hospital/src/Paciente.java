@@ -129,7 +129,7 @@ public class Paciente {
         Collections.sort(Consulta.get_lista_consultas());
         for (Consulta consulta : consultas) {
             if (consulta.get_data().isBefore(LocalDate.now()) && consulta.get_crm() == crm) {
-                output.append(String.format("\n%-12s %-8s %-17s (%s)", consulta.get_data_str(), consulta.get_horario()));
+                output.append(String.format("\n%-12s %-8s", consulta.get_data_str(), consulta.get_horario()));
             }
         }
         return output.toString();
