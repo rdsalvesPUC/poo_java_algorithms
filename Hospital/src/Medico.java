@@ -1,6 +1,9 @@
 import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.time.temporal.ChronoUnit;
+
 
 public class Medico {
     private String nome;
@@ -60,9 +63,16 @@ public class Medico {
         pacientes.add(paciente);
     }
 
-    public void exibir() {
-        System.out.printf("\nMédico: %-10s CRM: %-10s", nome, crm);
-        System.out.println("\n------------------------------------");
+    public static int converter_meses(int meses) {
+        int meses_to_dias = meses * 30;
+        return meses_to_dias;
+    }
+
+    public static long diferenca_dias(LocalDate data_consulta) {
+        LocalDate data_atual = LocalDate.now();
+
+        long diferencaEmDias = ChronoUnit.DAYS.between(data_consulta, data_atual);
+        return diferencaEmDias;
     }
 
     public String exibir_pacientes_by_medico() {
@@ -93,6 +103,27 @@ public class Medico {
                     String nome_paciente = Paciente.get_paciente_nome(consulta.get_cpf());
                     output.append(String.format("\n%-12s %-8s %-17s (%s)", consulta.get_data_str(), consulta.get_horario(), nome_paciente, consulta.get_cpf()));
                 }
+            }
+        }
+        return output.toString();
+    }
+
+    public String exibir_pacientesInativos_by_medico(int meses) {
+        int dataCorte = converter_meses(meses);
+        StringBuilder output = new StringBuilder();
+
+        output.append(String.format("\nMédico: %-10s CRM: %-10s", nome, crm));
+        output.append("\n-------------------------------------------------------");
+        output.append("\nPacientes           CPF            Dias Inativo");
+        output.append("\n-------------------------------------------------------");
+        for (Paciente paciente : pacientes) {
+            paciente.get_lista_consultas().sort(Comparator.comparing(Consulta::get_data));
+            Consulta consultaMaisAntiga = paciente.get_lista_consultas().get(0);
+            long diferencaDias = diferenca_dias(consultaMaisAntiga.get_data());
+            if (diferencaDias > dataCorte) {
+                // output.append(String.format("\n%-12s %-20s %-15s %s dias", consultaMaisAntiga.get_data_str(), paciente.get_nome(), paciente.get_cpf(), diferencaDias));
+                output.append(String.format("\n%-20s %-15s %s dias inativo", paciente.get_nome(), paciente.get_cpf(), diferencaDias));
+
             }
         }
         return output.toString();

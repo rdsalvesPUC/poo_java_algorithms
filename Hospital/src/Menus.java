@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 public class Menus {
     private static ArrayList<Medico> listaMedicos = Medico.get_lista_medicos();
     private static ArrayList<Paciente> listaPacientes = Paciente.get_lista_pacientes();
-    private static ArrayList<Consulta> listaConsultas = Consulta.get_lista_consultas();
 
     public static void exibirMenuPrincipal() {
         System.out.println("\nBem-vindo ao Hospital XPTO");
@@ -155,12 +154,33 @@ public class Menus {
             Menus.consultarSalvarResultado(scanner, conteudo);
     }
 
+    // DONE
     // 6 Quais são os pacientes de um determinado médico que não o consulta há mais
     // que um determinado tempo (em meses)?
     public static void consultarPacientesInativos(Scanner scanner) {
-        System.out.println("\nConsultar lista de pacientes inativos de um médico");
-        // Implemente a lógica aqui
-//        Menus.consultarSalvarResultado(scanner, conteudo);
+        System.out.println("\nPor favor, informe o CRM do médico desejado: ");
+        int crm = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Informe o tempo de inatividade em meses (exemplo: 1, 2, 3...): ");
+        int meses = scanner.nextInt();
+        scanner.nextLine();
+
+        String conteudo = "";
+        boolean encontrado = false;
+        for (Medico medico : listaMedicos) {
+            if (crm == medico.get_crm()) {
+                conteudo = medico.exibir_pacientesInativos_by_medico(meses);
+                System.out.println(conteudo);
+                encontrado = true;
+                break;
+            }
+        }
+        if (!encontrado) {
+            System.out.println("--- Esse CRM não pertece à um médico em nossa base, tente novamente!");
+        }
+        else
+            Menus.consultarSalvarResultado(scanner, conteudo);
     }
 
     // DONE
@@ -194,10 +214,36 @@ public class Menus {
             Menus.consultarSalvarResultado(scanner, conteudo);
     }
 
+    // DONE
+    // 5 Quais são todas as consultas agendadas que um determinado paciente possui?
+    // (Somente consultas agendadas para um tempo posterior ao momento atual são consideradas.)
     public static void consultarAgendaPaciente(Scanner scanner) {
-        System.out.println("\nConsultar a agenda de um paciente");
-        // Implemente a lógica aqui
-//        Menus.consultarSalvarResultado(scanner, conteudo);
+        String conteudo = "";
+        String cpfRegex = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}";
+        String cpf = "";
+
+        while (!Pattern.matches(cpfRegex, cpf)) {
+            System.out.println("\nPor favor, informe o CPF do paciente desejado: ");
+            cpf = scanner.nextLine();
+
+            if (!Pattern.matches(cpfRegex, cpf)) {
+                System.out.println("--- CPF inválido! Informe o CPF no formato 000.000.000-00, respeitando a pontuação.");
+            }
+        }
+        boolean encontrado = false;
+        for (Paciente paciente : listaPacientes) {
+            if (Objects.equals(cpf, paciente.get_cpf())) {
+                conteudo = paciente.exibir_consultas_by_paciente();
+                System.out.println(paciente.exibir_consultas_by_paciente());
+                encontrado = true;
+                break;
+            }
+        }
+        if (!encontrado) {
+            System.out.println("--- Esse CPF não pertece à um paciente em nossa base, tente novamente!");
+        }
+        else
+            Menus.consultarSalvarResultado(scanner, conteudo);
     }
 
     // DONE

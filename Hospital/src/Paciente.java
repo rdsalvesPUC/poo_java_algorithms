@@ -87,11 +87,6 @@ public class Paciente {
         return resposta;
     }
 
-    public void exibir() {
-        System.out.printf("\nPaciente: %-20s CPF: %-10s", nome, cpf);
-        System.out.println("\n------------------------------------");
-    }
-
     public String exibir_consultas_by_paciente() {
         StringBuilder output = new StringBuilder();
         output.append(String.format("\nPaciente: %-20s CPF: %-10s", nome, cpf));
@@ -100,8 +95,10 @@ public class Paciente {
         output.append("\n------------------------------------");
         Collections.sort(Consulta.get_lista_consultas());
         for (Consulta consulta : consultas) {
-            String nome_medico = Medico.get_medico_nome(consulta.get_crm());
-            output.append(String.format("\n%-15s %-10s %-10s (%s)", consulta.get_data_str(), consulta.get_horario(), nome_medico, consulta.get_crm()));
+            if (consulta.get_data().isAfter(LocalDate.now())) {
+                String nome_medico = Medico.get_medico_nome(consulta.get_crm());
+                output.append(String.format("\n%-15s %-10s %-10s (%s)", consulta.get_data_str(), consulta.get_horario(), nome_medico, consulta.get_crm()));
+            }
         }
         return output.toString();
     }
@@ -132,7 +129,6 @@ public class Paciente {
         Collections.sort(Consulta.get_lista_consultas());
         for (Consulta consulta : consultas) {
             if (consulta.get_data().isBefore(LocalDate.now()) && consulta.get_crm() == crm) {
-                // output.append(String.format("\n%-15s %-10s", consulta.get_data_str(), consulta.get_horario()));
                 output.append(String.format("\n%-12s %-8s %-17s (%s)", consulta.get_data_str(), consulta.get_horario()));
             }
         }
