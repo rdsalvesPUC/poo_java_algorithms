@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
@@ -10,32 +11,35 @@ public class sistemaHospitalar {
 
         Paciente.alocar_paciente();
 
-        Scanner scanner = new Scanner(System.in);
+        sistemaGUI sistemaGUI = new sistemaGUI();
+        sistemaGUI.mostrar();
 
-        int escolha;
-        boolean sair = false;
-
-        do {
-            Menus.exibirMenuPrincipal();
-            System.out.print("Escolha uma opção: ");
-            escolha = scanner.nextInt();
-            scanner.nextLine(); // Limpar o buffer do scanner
-
-            switch (escolha) {
-                case 1:
-                    Menus.menuMedico(scanner);
-                    break;
-                case 2:
-                    Menus.menuPaciente(scanner);
-                    break;
-                case 3:
-                    sair = true;
-                    System.out.println("Saindo do sistema. Até logo!");
-                    break;
-                default:
-                    System.out.println("Opção inválida. Por favor, escolha novamente.");
-            }
-        } while (!sair);
-        scanner.close();
+        //Scanner scanner = new Scanner(System.in);
+        //
+        //int escolha;
+        //boolean sair = false;
+        //
+        //do {
+        //    Menus.exibirMenuPrincipal();
+        //    System.out.print("Escolha uma opção: ");
+        //    escolha = scanner.nextInt();
+        //    scanner.nextLine(); // Limpar o buffer do scanner
+        //
+        //    switch (escolha) {
+        //        case 1:
+        //            Menus.menuMedico(scanner);
+        //            break;
+        //        case 2:
+        //            Menus.menuPaciente(scanner);
+        //            break;
+        //        case 3:
+        //            sair = true;
+        //            System.out.println("Saindo do sistema. Até logo!");
+        //            break;
+        //        default:
+        //            System.out.println("Opção inválida. Por favor, escolha novamente.");
+        //    }
+        //} while (!sair);
+        //scanner.close();
     }
 }

@@ -1,0 +1,25 @@
+Programação Orientada a Objetos – Trabalho 3 – Avaliação Somativa do RA3
+Cada equipe deve desenvolver um trabalho próprio, de forma a contemplar os seguintes requisitos:
+
+
+TRATAMENTO DE EXCEÇÃO (Peso: 10%)
+1. Devem ser programadas, ao menos, duas classes derivadas da classe Exception,
+sendo que essas deverão ser instanciadas e usadas no comando throw. 
+
+THROWS (Peso: 10%)
+2. Devem existir, ao menos, dois métodos que repassam exceção, ou seja, que
+contenham a cláusula throws em sua assinatura. 
+
+INTERFACE (Peso: 40%)
+3. A interação com o usuário deve ocorrer por meio de uma interface gráfica.
+Dependendo da aplicação, podem ser usados desenhos (figuras geométricas ou
+imagens), eventos (por exemplo, setas do teclado), formulários, ou qualquer
+combinação desses. 
+
+PERSISTENCIA DE DADOS (Peso: 30%)
+4. Deve haver uso de objetos persistentes tal que objetos sejam criados e salvos
+por um programa e, depois, sejam recuperados por outro programa. 
+
+DONE - LEITURA DE DADOS (Peso: 10%)
+5. O programa que cria os objetos persistentes deve ler dados de um arquivo csv ou
+txt para a criação dos objetos. 

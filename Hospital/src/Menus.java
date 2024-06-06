@@ -10,12 +10,13 @@ public class Menus {
     private static ArrayList<Paciente> listaPacientes = Paciente.get_lista_pacientes();
 
     public static void exibirMenuPrincipal() {
-        System.out.println("\nBem-vindo ao Hospital XPTO");
-        System.out.println("------------------------------------");
-        System.out.println("# Você deseja informações sobre um Médico ou um Paciente?");
-        System.out.println("1 - Médico >");
-        System.out.println("2 - Paciente >");
-        System.out.println("3 - Sair");
+
+        //System.out.println("\nBem-vindo ao Hospital XPTO");
+        //System.out.println("------------------------------------");
+        //System.out.println("# Você deseja informações sobre um Médico ou um Paciente?");
+        //System.out.println("1 - Médico >");
+        //System.out.println("2 - Paciente >");
+        //System.out.println("3 - Sair");
     }
 
     public static void menuMedico(Scanner scanner) {
