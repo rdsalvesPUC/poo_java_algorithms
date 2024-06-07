@@ -11,8 +11,8 @@ public class sistemaHospitalar {
 
         Paciente.alocar_paciente();
 
-        sistemaGUI sistemaGUI = new sistemaGUI();
-        sistemaGUI.mostrar();
+        sistemaGUI home = new sistemaGUI();
+        home.mostrarTelaInicial();
 
         //Scanner scanner = new Scanner(System.in);
         //

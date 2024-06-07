@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,13 +11,12 @@ public class Menus {
     private static ArrayList<Paciente> listaPacientes = Paciente.get_lista_pacientes();
 
     public static void exibirMenuPrincipal() {
-
-        //System.out.println("\nBem-vindo ao Hospital XPTO");
-        //System.out.println("------------------------------------");
-        //System.out.println("# Você deseja informações sobre um Médico ou um Paciente?");
-        //System.out.println("1 - Médico >");
-        //System.out.println("2 - Paciente >");
-        //System.out.println("3 - Sair");
+        System.out.println("\nBem-vindo ao Hospital XPTO");
+        System.out.println("------------------------------------");
+        System.out.println("# Você deseja informações sobre um Médico ou um Paciente?");
+        System.out.println("1 - Médico >");
+        System.out.println("2 - Paciente >");
+        System.out.println("3 - Sair");
     }
 
     public static void menuMedico(Scanner scanner) {
@@ -312,9 +312,9 @@ public class Menus {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomeArquivo))) {
             writer.write(conteudo);
-            System.out.println("+++ Resultado salvo em " + nomeArquivo);
+            JOptionPane.showMessageDialog(null, "Resultado salvo em " + nomeArquivo, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException e) {
-            System.out.println("--- Erro ao salvar o resultado em arquivo: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao salvar o resultado em arquivo: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 

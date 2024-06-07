@@ -1,0 +1,21 @@
+
+Médico: ﻿Dr. Ana Silva CRM: 12345     
+------------------------------------
+Paciente             CPF
+------------------------------------
+José Silva           234.567.890-11      
+Laura Costa          567.890.123-44      
+Beatriz Almeida      901.234.567-88      
+Ricardo Sousa        012.345.678-99      
+Camila Vieira        345.678.901-32      
+Amanda Santos        567.890.123-54      
+Diego Martins        890.123.456-87      
+Isabela Sousa        123.456.789-21      
+Rafael Lima          234.567.890-51      
+Vanessa Oliveira     567.890.123-66      
+Roberto Santos       678.901.234-70      
+Marcelo Costa        890.124.456-97      
+Patrícia Almeida     123.456.789-20      
+Leonardo Almeida     234.567.890-41      
+Leonardo Almeida     234.567.890-41      
+Mateus Vieira        678.901.234-85      
