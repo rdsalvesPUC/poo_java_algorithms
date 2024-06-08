@@ -35,6 +35,12 @@ public class LeitorBotoes implements ActionListener {
             case "Consultar a lista de pacientes de um médico":
                 gui.mostrarTelaSolicitarCRM();
                 break;
+            case "Consultar a agenda de um médico":
+                gui.mostrarTelaSolicitarAgendaMedico();
+                break;
+            case "Consultar lista de pacientes inativos de um médico":
+                gui.mostrarTelaSolicitarInativosMedico();
+                break;
             default:
                 System.out.println("Opção desconhecida: " + comando);
         }

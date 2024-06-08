@@ -6,7 +6,7 @@ TRATAMENTO DE EXCEÇÃO (Peso: 10%)
 1. Devem ser programadas, ao menos, duas classes derivadas da classe Exception,
 sendo que essas deverão ser instanciadas e usadas no comando throw. 
 
-THROWS (Peso: 10%)
+DONE - THROWS (Peso: 10%)
 2. Devem existir, ao menos, dois métodos que repassam exceção, ou seja, que
 contenham a cláusula throws em sua assinatura. 
 

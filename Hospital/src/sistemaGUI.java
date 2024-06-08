@@ -4,8 +4,10 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.io.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class sistemaGUI {
     private JFrame frame;
@@ -210,5 +212,145 @@ public class sistemaGUI {
         frame.add(painel);
         frame.revalidate();
         frame.repaint();
+    }
+
+    public void mostrarTelaSolicitarAgendaMedico() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                criarTelaSolicitarAgendaMedico();
+            }
+        });
+    }
+
+    private void criarTelaSolicitarAgendaMedico() {
+        JPanel panel = new JPanel(new GridLayout(4, 2, 10, 10));
+        panel.setBorder(new EmptyBorder(10, 20, 10, 20));
+
+        JLabel crmLabel = new JLabel("CRM do médico:");
+        JTextField crmField = new JTextField();
+        panel.add(crmLabel);
+        panel.add(crmField);
+
+        JLabel dataInicialLabel = new JLabel("Data inicial (dd/mm/aaaa):");
+        JTextField dataInicialField = new JTextField();
+        panel.add(dataInicialLabel);
+        panel.add(dataInicialField);
+
+        JLabel dataFinalLabel = new JLabel("Data final (dd/mm/aaaa):");
+        JTextField dataFinalField = new JTextField();
+        panel.add(dataFinalLabel);
+        panel.add(dataFinalField);
+
+        int result = JOptionPane.showConfirmDialog(frame, panel, "Consultar Agenda de Médico", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+            String crmText = crmField.getText().trim();
+            String dataInicialText = dataInicialField.getText().trim();
+            String dataFinalText = dataFinalField.getText().trim();
+
+            if (!crmText.isEmpty() && !dataInicialText.isEmpty() && !dataFinalText.isEmpty()) {
+                try {
+                    int crm = Integer.parseInt(crmText);
+                    LocalDate dataInicial = Consulta.str_to_data(dataInicialText);
+                    LocalDate dataFinal = Consulta.str_to_data(dataFinalText);
+
+                    if (dataInicial == null || dataFinal == null) {
+                        JOptionPane.showMessageDialog(frame, "Uma ou ambas as datas são inválidas. Por favor, tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+                    } else if (dataFinal.isBefore(dataInicial)) {
+                        JOptionPane.showMessageDialog(frame, "A data final não pode ser anterior à data inicial.", "Erro", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        executarConsultaAgendaMedico(crm, dataInicial, dataFinal);
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(frame, "Por favor, insira um CRM válido.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(frame, "Todos os campos são obrigatórios. Por favor, tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void executarConsultaAgendaMedico(int crm, LocalDate dataInicial, LocalDate dataFinal) {
+        String conteudo = "";
+        boolean encontrado = false;
+        for (Medico medico : listaMedicos) {
+            if (crm == medico.get_crm()) {
+                conteudo = medico.exibir_consultas_by_medico(dataInicial, dataFinal);
+                encontrado = true;
+                break;
+            }
+        }
+        if (!encontrado) {
+            JOptionPane.showMessageDialog(frame, "Esse CRM não pertence a um médico em nossa base, tente novamente!", "Erro", JOptionPane.ERROR_MESSAGE);
+        } else {
+            mostrarResultadoConsulta(conteudo, "Médicos", new String[]{
+                    "Consultar a lista de pacientes de um médico",
+                    "Consultar a agenda de um médico",
+                    "Consultar lista de pacientes inativos de um médico"
+            });
+        }
+    }
+
+    public void mostrarTelaSolicitarInativosMedico() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                criarTelaSolicitarInativosMedico();
+            }
+        });
+    }
+
+    private void criarTelaSolicitarInativosMedico() {
+        JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
+        panel.setBorder(new EmptyBorder(10, 20, 10, 20));
+
+        JLabel crmLabel = new JLabel("CRM do médico:");
+        JTextField crmField = new JTextField();
+        panel.add(crmLabel);
+        panel.add(crmField);
+
+        JLabel mesesLabel = new JLabel("Tempo de inatividade (meses):");
+        JTextField mesesField = new JTextField();
+        panel.add(mesesLabel);
+        panel.add(mesesField);
+
+        int result = JOptionPane.showConfirmDialog(frame, panel, "Consultar Pacientes Inativos de Médico", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+            String crmText = crmField.getText().trim();
+            String mesesText = mesesField.getText().trim();
+
+            if (!crmText.isEmpty() && !mesesText.isEmpty()) {
+                try {
+                    int crm = Integer.parseInt(crmText);
+                    int meses = Integer.parseInt(mesesText);
+                    executarConsultaInativosMedico(crm, meses);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(frame, "Por favor, insira valores válidos para CRM e tempo de inatividade.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(frame, "Todos os campos são obrigatórios. Por favor, tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void executarConsultaInativosMedico(int crm, int meses) {
+        String conteudo = "";
+        boolean encontrado = false;
+        for (Medico medico : listaMedicos) {
+            if (crm == medico.get_crm()) {
+                conteudo = medico.exibir_pacientesInativos_by_medico(meses);
+                encontrado = true;
+                break;
+            }
+        }
+        if (!encontrado) {
+            JOptionPane.showMessageDialog(frame, "Esse CRM não pertence a um médico em nossa base, tente novamente!", "Erro", JOptionPane.ERROR_MESSAGE);
+        } else {
+            mostrarResultadoConsulta(conteudo, "Médicos", new String[]{
+                    "Consultar a lista de pacientes de um médico",
+                    "Consultar a agenda de um médico",
+                    "Consultar lista de pacientes inativos de um médico"
+            });
+        }
     }
 }
