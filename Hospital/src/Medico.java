@@ -3,9 +3,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.time.temporal.ChronoUnit;
-
-
-public class Medico {
+public class Medico extends GestaoDados implements Serializable {
     private String nome;
     private int crm;
     private ArrayList<Paciente> pacientes;
@@ -33,6 +31,14 @@ public class Medico {
                 medicos.add(new Medico(nome, crm));
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            salvar(medicos,"Save-Medicos");
+            System.out.println("Lista de médicos foi serializada.");
+        } catch (IOException e) {
+            System.out.println("Não foi possível serializar a lista de médicos");
             e.printStackTrace();
         }
     }

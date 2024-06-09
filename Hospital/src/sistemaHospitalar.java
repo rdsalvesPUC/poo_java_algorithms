@@ -2,12 +2,26 @@ import javax.swing.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
+import java.io.File;
+
 
 public class sistemaHospitalar {
-    public static void main(String[] args) throws FileNotFoundException {
-        Medico.criar_medicos("Hospital/arquivos_csv/medicos.csv");
-        Paciente.criar_pacientes("Hospital/arquivos_csv/pacientes.csv");
-        Consulta.criar_consultas("Hospital/arquivos_csv/consultas.csv");
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        String diretorio = "./";
+
+        if (GestaoDados.existeArquivoBin(diretorio)) {
+            System.out.println("Carregando dados BIN");
+
+            Medico medicos = GestaoDados.abrir(GestaoDados.binMedicos(diretorio), Medico.class);
+            //Paciente pacientes = GestaoDados.abrir();
+        } else {
+            System.out.println("Carregando dados CSV");
+
+            Medico.criar_medicos("Hospital/arquivos_csv/medicos.csv");
+            Paciente.criar_pacientes("Hospital/arquivos_csv/pacientes.csv");
+            Consulta.criar_consultas("Hospital/arquivos_csv/consultas.csv");
+        }
+
 
         Paciente.alocar_paciente();
 

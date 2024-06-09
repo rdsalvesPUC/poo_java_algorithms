@@ -2,7 +2,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
 
-public class Paciente {
+public class Paciente extends GestaoDados implements Serializable {
     private String nome;
     private String cpf;
     private ArrayList<Consulta> consultas;
@@ -30,6 +30,14 @@ public class Paciente {
                 pacientes.add(new Paciente(nome, cpf));
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            salvar(pacientes,"Save-Pacientes");
+            System.out.println("Lista de pacientes foi serializada.");
+        } catch (IOException e) {
+            System.out.println("Não foi possível serializar a lista de pacientes");
             e.printStackTrace();
         }
     }

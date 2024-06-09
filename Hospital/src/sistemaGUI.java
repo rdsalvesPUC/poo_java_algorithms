@@ -3,11 +3,12 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.regex.Pattern;
 import java.io.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.time.LocalDate;
 
 public class sistemaGUI {
     private JFrame frame;
@@ -177,43 +178,6 @@ public class sistemaGUI {
         }
     }
 
-    public void mostrarResultadoConsulta(String conteudo, String subtitle, String[] botoes) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                criarTelaResultadoConsulta(conteudo, subtitle, botoes);
-            }
-        });
-    }
-
-    private void criarTelaResultadoConsulta(String conteudo, String subtitle, String[] botoes) {
-        JPanel painel = new JPanel();
-        painel.setBorder(new EmptyBorder(10, 20, 10, 20));
-        painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
-
-        JTextArea resultadoArea = new JTextArea(conteudo);
-        resultadoArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(resultadoArea);
-        scrollPane.setPreferredSize(new Dimension(400, 300));
-        painel.add(scrollPane);
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-
-        JButton voltarButton = new JButton("Voltar");
-        voltarButton.addActionListener(e -> mostrarTelaSecundaria(subtitle, botoes));
-        buttonPanel.add(voltarButton);
-
-        JButton salvarButton = new JButton("Salvar Consulta");
-        salvarButton.addActionListener(e -> Menus.salvar_arquivo(conteudo, Menus.consultarDataHora()));
-        buttonPanel.add(salvarButton);
-
-        painel.add(buttonPanel);
-
-        frame.getContentPane().removeAll();
-        frame.add(painel);
-        frame.revalidate();
-        frame.repaint();
-    }
-
     public void mostrarTelaSolicitarAgendaMedico() {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -223,7 +187,7 @@ public class sistemaGUI {
     }
 
     private void criarTelaSolicitarAgendaMedico() {
-        JPanel panel = new JPanel(new GridLayout(4, 2, 10, 10));
+        JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
         panel.setBorder(new EmptyBorder(10, 20, 10, 20));
 
         JLabel crmLabel = new JLabel("CRM do médico:");
@@ -291,16 +255,16 @@ public class sistemaGUI {
         }
     }
 
-    public void mostrarTelaSolicitarInativosMedico() {
+    public void mostrarTelaSolicitarPacientesInativos() {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                criarTelaSolicitarInativosMedico();
+                criarTelaSolicitarPacientesInativos();
             }
         });
     }
 
-    private void criarTelaSolicitarInativosMedico() {
-        JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
+    private void criarTelaSolicitarPacientesInativos() {
+        JPanel panel = new JPanel(new GridLayout(2, 2, 10, 10));
         panel.setBorder(new EmptyBorder(10, 20, 10, 20));
 
         JLabel crmLabel = new JLabel("CRM do médico:");
@@ -308,12 +272,12 @@ public class sistemaGUI {
         panel.add(crmLabel);
         panel.add(crmField);
 
-        JLabel mesesLabel = new JLabel("Tempo de inatividade (meses):");
+        JLabel mesesLabel = new JLabel("Tempo de inatividade (em meses):");
         JTextField mesesField = new JTextField();
         panel.add(mesesLabel);
         panel.add(mesesField);
 
-        int result = JOptionPane.showConfirmDialog(frame, panel, "Consultar Pacientes Inativos de Médico", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int result = JOptionPane.showConfirmDialog(frame, panel, "Consultar Pacientes Inativos", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {
             String crmText = crmField.getText().trim();
@@ -323,7 +287,8 @@ public class sistemaGUI {
                 try {
                     int crm = Integer.parseInt(crmText);
                     int meses = Integer.parseInt(mesesText);
-                    executarConsultaInativosMedico(crm, meses);
+
+                    executarConsultaPacientesInativos(crm, meses);
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(frame, "Por favor, insira valores válidos para CRM e tempo de inatividade.", "Erro", JOptionPane.ERROR_MESSAGE);
                 }
@@ -333,7 +298,7 @@ public class sistemaGUI {
         }
     }
 
-    private void executarConsultaInativosMedico(int crm, int meses) {
+    private void executarConsultaPacientesInativos(int crm, int meses) {
         String conteudo = "";
         boolean encontrado = false;
         for (Medico medico : listaMedicos) {
@@ -353,4 +318,190 @@ public class sistemaGUI {
             });
         }
     }
+
+    public void mostrarTelaSolicitarMedicosPaciente() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                criarTelaSolicitarMedicosPaciente();
+            }
+        });
+    }
+
+    private void criarTelaSolicitarMedicosPaciente() {
+        String cpfRegex = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}";
+        String cpf = JOptionPane.showInputDialog(frame, "Informe o CPF do paciente (formato 000.000.000-00):");
+
+        if (cpf != null && Pattern.matches(cpfRegex, cpf)) {
+            executarConsultaMedicosPaciente(cpf);
+        } else {
+            JOptionPane.showMessageDialog(frame, "CPF inválido! Informe o CPF no formato 000.000.000-00.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void executarConsultaMedicosPaciente(String cpf) {
+        String conteudo = "";
+        boolean encontrado = false;
+        for (Paciente paciente : listaPacientes) {
+            if (Objects.equals(cpf, paciente.get_cpf())) {
+                conteudo = paciente.exibir_medicos_by_paciente();
+                encontrado = true;
+                break;
+            }
+        }
+        if (!encontrado) {
+            JOptionPane.showMessageDialog(frame, "Esse CPF não pertence a um paciente em nossa base, tente novamente!", "Erro", JOptionPane.ERROR_MESSAGE);
+        } else {
+            mostrarResultadoConsulta(conteudo, "Pacientes", new String[]{
+                    "Médicos responsáveis pelo paciente",
+                    "Consultar a agenda de um paciente",
+                    "Histórico de consultas do paciente com um médico"
+            });
+        }
+    }
+
+    public void mostrarTelaSolicitarAgendaPaciente() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                criarTelaSolicitarAgendaPaciente();
+            }
+        });
+    }
+
+    private void criarTelaSolicitarAgendaPaciente() {
+        String cpfRegex = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}";
+        String cpf = JOptionPane.showInputDialog(frame, "Informe o CPF do paciente (formato 000.000.000-00):");
+
+        if (cpf != null && Pattern.matches(cpfRegex, cpf)) {
+            executarConsultaAgendaPaciente(cpf);
+        } else {
+            JOptionPane.showMessageDialog(frame, "CPF inválido! Informe o CPF no formato 000.000.000-00.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void executarConsultaAgendaPaciente(String cpf) {
+        String conteudo = "";
+        boolean encontrado = false;
+        for (Paciente paciente : listaPacientes) {
+            if (Objects.equals(cpf, paciente.get_cpf())) {
+                conteudo = paciente.exibir_consultas_by_paciente();
+                encontrado = true;
+                break;
+            }
+        }
+        if (!encontrado) {
+            JOptionPane.showMessageDialog(frame, "Esse CPF não pertence a um paciente em nossa base, tente novamente!", "Erro", JOptionPane.ERROR_MESSAGE);
+        } else {
+            mostrarResultadoConsulta(conteudo, "Pacientes", new String[]{
+                    "Médicos responsáveis pelo paciente",
+                    "Consultar a agenda de um paciente",
+                    "Histórico de consultas do paciente com um médico"
+            });
+        }
+    }
+
+    public void mostrarResultadoConsulta(String conteudo, String subtitle, String[] botoes) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                criarTelaResultadoConsulta(conteudo, subtitle, botoes);
+            }
+        });
+    }
+
+    private void criarTelaResultadoConsulta(String conteudo, String subtitle, String[] botoes) {
+        JPanel painel = new JPanel();
+        painel.setBorder(new EmptyBorder(10, 20, 10, 20));
+        painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+
+        JTextArea resultadoArea = new JTextArea(conteudo);
+        resultadoArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(resultadoArea);
+        scrollPane.setPreferredSize(new Dimension(400, 300));
+        painel.add(scrollPane);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+        JButton voltarButton = new JButton("Voltar");
+        voltarButton.addActionListener(e -> mostrarTelaSecundaria(subtitle, botoes));
+        buttonPanel.add(voltarButton);
+
+        JButton salvarButton = new JButton("Salvar Consulta");
+        salvarButton.addActionListener(e -> Menus.salvar_arquivo(conteudo, Menus.consultarDataHora()));
+        buttonPanel.add(salvarButton);
+
+        painel.add(buttonPanel);
+
+        frame.getContentPane().removeAll();
+        frame.add(painel);
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    public void mostrarTelaSolicitarHistoricoConsultas() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                criarTelaSolicitarHistoricoConsultas();
+            }
+        });
+    }
+
+    private void criarTelaSolicitarHistoricoConsultas() {
+        JPanel panel = new JPanel(new GridLayout(2, 2, 10, 10));
+        panel.setBorder(new EmptyBorder(10, 20, 10, 20));
+
+        JLabel cpfLabel = new JLabel("CPF do paciente:");
+        JTextField cpfField = new JTextField();
+        panel.add(cpfLabel);
+        panel.add(cpfField);
+
+        JLabel crmLabel = new JLabel("CRM do médico:");
+        JTextField crmField = new JTextField();
+        panel.add(crmLabel);
+        panel.add(crmField);
+
+        int result = JOptionPane.showConfirmDialog(frame, panel, "Consultar Histórico de Consultas", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+            String cpf = cpfField.getText().trim();
+            String crmText = crmField.getText().trim();
+
+            String cpfRegex = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}";
+            String crmRegex = "\\d+";
+
+            if (!cpf.isEmpty() && !crmText.isEmpty() && Pattern.matches(cpfRegex, cpf) && Pattern.matches(crmRegex, crmText)) {
+                int crm = Integer.parseInt(crmText);
+                executarConsultaHistoricoConsultas(cpf, crm);
+            } else {
+                JOptionPane.showMessageDialog(frame, "CPF ou CRM inválido! Verifique os campos e tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void executarConsultaHistoricoConsultas(String cpf, int crm) {
+        String conteudo = "";
+        boolean pacienteEncontrado = false;
+        boolean medicoEncontrado = false;
+        for (Paciente paciente : listaPacientes) {
+            if (Objects.equals(cpf, paciente.get_cpf())) {
+                pacienteEncontrado = true;
+                if (paciente.check_medico(crm)) {
+                    medicoEncontrado = true;
+                    conteudo = paciente.exibir_consultas_by_paciente_and_medico(crm);
+                    break;
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Esse paciente nunca foi atendido por esse médico. Tente novamente!", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+        if (!pacienteEncontrado) {
+            JOptionPane.showMessageDialog(frame, "Esse CPF não pertence a um paciente em nossa base, tente novamente!", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+        if (pacienteEncontrado && medicoEncontrado) {
+            mostrarResultadoConsulta(conteudo, "Pacientes", new String[]{
+                    "Médicos responsáveis pelo paciente",
+                    "Consultar a agenda de um paciente",
+                    "Histórico de consultas do paciente com um médico"
+            });
+        }
+    }
+
 }

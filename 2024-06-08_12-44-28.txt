@@ -1,0 +1,7 @@
+
+Médico: ﻿Dr. Ana Silva CRM: 12345     
+-------------------------------------------------------
+Pacientes           CPF            Dias Inativo
+-------------------------------------------------------
+José Silva           234.567.890-11  386 dias inativo
+Diego Martins        890.123.456-87  394 dias inativo

@@ -1,3 +1,4 @@
+import javax.print.ServiceUI;
 import java.text.DateFormat;
 import java.time.*;
 import java.io.*;
@@ -5,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
-public class Consulta implements Comparable<Consulta> {
+public class Consulta implements Comparable<Consulta>, Serializable {
     private LocalDate data;
     private LocalTime horario;
     private int crm;

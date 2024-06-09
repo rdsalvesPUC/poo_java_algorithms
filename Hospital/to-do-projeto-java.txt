@@ -10,7 +10,7 @@ DONE - THROWS (Peso: 10%)
 2. Devem existir, ao menos, dois métodos que repassam exceção, ou seja, que
 contenham a cláusula throws em sua assinatura. 
 
-INTERFACE (Peso: 40%)
+DONE - INTERFACE (Peso: 40%)
 3. A interação com o usuário deve ocorrer por meio de uma interface gráfica.
 Dependendo da aplicação, podem ser usados desenhos (figuras geométricas ou
 imagens), eventos (por exemplo, setas do teclado), formulários, ou qualquer

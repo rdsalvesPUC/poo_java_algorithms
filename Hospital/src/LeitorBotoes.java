@@ -39,7 +39,16 @@ public class LeitorBotoes implements ActionListener {
                 gui.mostrarTelaSolicitarAgendaMedico();
                 break;
             case "Consultar lista de pacientes inativos de um médico":
-                gui.mostrarTelaSolicitarInativosMedico();
+                gui.mostrarTelaSolicitarPacientesInativos();
+                break;
+            case "Médicos responsáveis pelo paciente":
+                gui.mostrarTelaSolicitarMedicosPaciente();
+                break;
+            case "Consultar a agenda de um paciente":
+                gui.mostrarTelaSolicitarAgendaPaciente();
+                break;
+            case "Histórico de consultas do paciente com um médico":
+                gui.mostrarTelaSolicitarHistoricoConsultas();
                 break;
             default:
                 System.out.println("Opção desconhecida: " + comando);
