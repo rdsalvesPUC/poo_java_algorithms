@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
-public class Consulta implements Comparable<Consulta>, Serializable {
+public class Consulta extends GestaoDados implements Comparable<Consulta>, Serializable {
     private LocalDate data;
     private LocalTime horario;
     private int crm;
@@ -20,7 +20,7 @@ public class Consulta implements Comparable<Consulta>, Serializable {
         this.cpf = cpf;
     }
 
-    public static void criar_consultas(String path) {
+    public static void criar_consultas(String path, List<Exception> exceptions) {
         BufferedReader reader = null;
         String line = "";
         String cvsSplitBy = ",";
@@ -41,9 +41,17 @@ public class Consulta implements Comparable<Consulta>, Serializable {
                 Consulta nova_consulta = new Consulta(data, horario, crm, cpf);
                 consultas.add(nova_consulta);
 
-                Consulta.alocar_consultas(nova_consulta, listaPacientes);
+                Consulta.alocar_consultas(nova_consulta, listaPacientes, exceptions);
             }
+        } catch (IOException | PacienteNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            salvar(consultas,"Save-Consultas");
+            System.out.println("Lista de consultas foi serializada.");
         } catch (IOException e) {
+            System.out.println("Não foi possível serializar a lista de consultas");
             e.printStackTrace();
         }
     }
@@ -94,12 +102,19 @@ public class Consulta implements Comparable<Consulta>, Serializable {
         return cpf;
     }
 
-    public static void alocar_consultas(Consulta consulta, ArrayList<Paciente> pacientes) {
+    public static void alocar_consultas(Consulta consulta, ArrayList<Paciente> pacientes, List<Exception> exceptions) throws PacienteNotFoundException, IOException {
+        boolean pacienteEncontrado = false;
+
         for (Paciente p : pacientes) {
             if (consulta.cpf.equals(p.get_cpf())) {
                 p.add_consulta(consulta);
+                pacienteEncontrado = true;
                 break;
             }
+        }
+
+        if (!pacienteEncontrado) {
+            exceptions.add(new PacienteNotFoundException("O CPF da consulta não pertence a nenhum paciente na base: " + consulta.cpf));
         }
     }
 

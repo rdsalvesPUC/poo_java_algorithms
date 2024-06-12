@@ -72,18 +72,27 @@ public class Paciente extends GestaoDados implements Serializable {
         consultas.add(consulta);
     }
 
-    public static void alocar_paciente() {
+    public static void alocar_paciente(List<Exception> exceptions) throws MedicoNotFoundException {
         ArrayList<Medico> listaMedicos = Medico.get_lista_medicos();
+        boolean medicoEncontrado = false;
+
         for (Paciente paciente : pacientes) {
             for (Consulta consulta : paciente.consultas) {
-                for (Medico medico: listaMedicos) {
+                medicoEncontrado = false;
+                for (Medico medico : listaMedicos) {
                     if (medico.get_crm() == consulta.get_crm()) {
                         medico.add_paciente(paciente);
+                        medicoEncontrado = true;
+                        break;
                     }
+                }
+                if (!medicoEncontrado) {
+                    exceptions.add(new MedicoNotFoundException("O CRM da consulta não pertence a nenhum médico na base: " + consulta.get_crm()));
                 }
             }
         }
     }
+
 
     public boolean check_medico(int crm) {
         boolean resposta = false;

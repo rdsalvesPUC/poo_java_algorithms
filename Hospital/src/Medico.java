@@ -3,6 +3,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.time.temporal.ChronoUnit;
+
 public class Medico extends GestaoDados implements Serializable {
     private String nome;
     private int crm;

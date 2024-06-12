@@ -504,4 +504,19 @@ public class sistemaGUI {
         }
     }
 
+    public static void setListaMedicos(ArrayList<Medico> medicos) {
+        listaMedicos = medicos;
+    }
+
+    public static void setListaPacientes(ArrayList<Paciente> pacientes) {
+        listaPacientes = pacientes;
+    }
+
+    public static ArrayList get_lista_pacientes() {
+        return listaPacientes;
+    }
+
+    //public static void setListaConsultas(ArrayList<Paciente> pacientes) {
+    //    listaPacientes = pacientes;
+    //}
 }

@@ -6,27 +6,35 @@ import java.io.File;
 
 
 public class sistemaHospitalar {
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, PacienteNotFoundException, MedicoNotFoundException {
+        List<Exception> exceptions = new ArrayList<>();
         String diretorio = "./";
 
         if (GestaoDados.existeArquivoBin(diretorio)) {
             System.out.println("Carregando dados BIN");
-
-            Medico medicos = GestaoDados.abrir(GestaoDados.binMedicos(diretorio), Medico.class);
-            //Paciente pacientes = GestaoDados.abrir();
+            GestaoDados.criar_medicos_bin(diretorio);
+            GestaoDados.criar_pacientes_bin(diretorio);
+            GestaoDados.criar_consultas_bin(diretorio, exceptions);
         } else {
             System.out.println("Carregando dados CSV");
 
             Medico.criar_medicos("Hospital/arquivos_csv/medicos.csv");
             Paciente.criar_pacientes("Hospital/arquivos_csv/pacientes.csv");
-            Consulta.criar_consultas("Hospital/arquivos_csv/consultas.csv");
+            Consulta.criar_consultas("Hospital/arquivos_csv/consultas.csv", exceptions);
         }
 
-
-        Paciente.alocar_paciente();
+        Paciente.alocar_paciente(exceptions);
 
         sistemaGUI home = new sistemaGUI();
         home.mostrarTelaInicial();
+
+        if (!exceptions.isEmpty()) {
+            for (Exception e : exceptions) {
+                System.out.println(e.getMessage());
+            }
+        } else {
+            System.out.println("Todos os pacientes e consultas foram alocados com sucesso.");
+        }
 
         //Scanner scanner = new Scanner(System.in);
         //
